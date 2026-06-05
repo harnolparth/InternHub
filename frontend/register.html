@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — InternHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- LEFT PANEL -->
+  <div class="auth-left">
+    <div class="auth-left-blob auth-left-blob-1"></div>
+    <div class="auth-left-blob auth-left-blob-2"></div>
+
+    <div class="auth-brand">
+      <span class="auth-brand-icon">⬡</span>
+      <span class="auth-brand-name">InternHub</span>
+    </div>
+
+    <div class="auth-headline">
+      <h1>Join<br><span class="highlight">InternHub</span><br>Today</h1>
+      <p>Register as a company to post internship roles, or as an applicant to discover and apply for opportunities.</p>
+    </div>
+
+    <div class="auth-features">
+      <div class="auth-feature">
+        <div class="auth-feature-icon">🚀</div>
+        <div class="auth-feature-text">
+          <strong>Up to 5 Companies</strong>
+          <span>Limited slots — register your company before they fill up</span>
+        </div>
+      </div>
+      <div class="auth-feature">
+        <div class="auth-feature-icon">♾️</div>
+        <div class="auth-feature-text">
+          <strong>Unlimited Applicants</strong>
+          <span>Any number of applicants can register and browse roles</span>
+        </div>
+      </div>
+      <div class="auth-feature">
+        <div class="auth-feature-icon">🔐</div>
+        <div class="auth-feature-text">
+          <strong>Secure &amp; Private</strong>
+          <span>Your data is stored securely in MongoDB Atlas</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL — register form -->
+  <div class="auth-right">
+    <div class="auth-form-wrap">
+
+      <h2 class="auth-form-title">Create Account</h2>
+      <p class="auth-form-sub">Choose your role to get started</p>
+
+      <!-- Role selector -->
+      <div class="role-tabs" id="roleTabs">
+        <div class="role-tab active" data-role="applicant" onclick="selectRole('applicant')">
+          <div class="role-tab-icon">🎓</div>
+          <div class="role-tab-label">I'm an Applicant</div>
+        </div>
+        <div class="role-tab" data-role="company" onclick="selectRole('company')">
+          <div class="role-tab-icon">🏢</div>
+          <div class="role-tab-label">I'm a Company</div>
+        </div>
+      </div>
+
+      <!-- Company slots info — shown only when company tab is active -->
+      <div id="slotsBar" class="slots-bar hidden">
+        <span>🏢</span>
+        <span>Company slots available: <strong id="slotsCount">...</strong> / 5</span>
+      </div>
+
+      <!-- APPLICANT FIELDS -->
+      <form class="auth-form" id="registerForm" novalidate>
+
+        <div id="applicantFields">
+          <div class="form-group">
+            <label class="form-label">Full Name <span class="required">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">👤</span>
+              <input type="text" id="regName" class="form-input" placeholder="e.g. Rahul Sharma">
+            </div>
+            <span class="error-msg" id="regNameErr"></span>
+          </div>
+        </div>
+
+        <!-- COMPANY FIELDS — hidden by default -->
+        <div id="companyFields" class="hidden">
+          <div class="form-group" style="margin-bottom:18px">
+            <label class="form-label">Company Name <span class="required">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">🏢</span>
+              <input type="text" id="regCompanyName" class="form-input" placeholder="e.g. TechCorp Pvt. Ltd.">
+            </div>
+            <span class="error-msg" id="regCompanyNameErr"></span>
+          </div>
+
+          <div class="form-group" style="margin-bottom:18px">
+            <label class="form-label">Industry / Domain <span class="required">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">🏭</span>
+              <select id="regIndustry" class="form-input form-select">
+                <option value="">Select industry...</option>
+                <option>Information Technology</option>
+                <option>Design & Creative</option>
+                <option>Data & Analytics</option>
+                <option>Marketing & Growth</option>
+                <option>Finance & Accounting</option>
+                <option>Healthcare & Biotech</option>
+                <option>Education & EdTech</option>
+                <option>E-Commerce & Retail</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <span class="error-msg" id="regIndustryErr"></span>
+          </div>
+
+          <div class="form-group" style="margin-bottom:18px">
+            <label class="form-label">Company Location <span class="required">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">📍</span>
+              <input type="text" id="regLocation" class="form-input" placeholder="e.g. Pune, Maharashtra">
+            </div>
+            <span class="error-msg" id="regLocationErr"></span>
+          </div>
+
+          <div class="form-group" style="margin-bottom:18px">
+            <label class="form-label">Company Website (optional)</label>
+            <div class="input-wrap">
+              <span class="input-icon">🌐</span>
+              <input type="url" id="regWebsite" class="form-input" placeholder="https://yourcompany.com">
+            </div>
+          </div>
+        </div>
+
+        <!-- SHARED FIELDS -->
+        <div class="form-group">
+          <label class="form-label">Email Address <span class="required">*</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">✉️</span>
+            <input type="email" id="regEmail" class="form-input" placeholder="you@example.com">
+          </div>
+          <span class="error-msg" id="regEmailErr"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password <span class="required">*</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="regPassword" class="form-input" placeholder="Min. 6 characters">
+            <span class="input-icon-right" onclick="togglePassword('regPassword', this)">👁️</span>
+          </div>
+          <span class="error-msg" id="regPasswordErr"></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Confirm Password <span class="required">*</span></label>
+          <div class="input-wrap">
+            <span class="input-icon">🔒</span>
+            <input type="password" id="regConfirm" class="form-input" placeholder="Re-enter password">
+            <span class="input-icon-right" onclick="togglePassword('regConfirm', this)">👁️</span>
+          </div>
+          <span class="error-msg" id="regConfirmErr"></span>
+        </div>
+
+        <!-- Server error -->
+        <div id="regServerErr" class="hidden"
+          style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);
+                 border-radius:10px;padding:12px 14px;font-size:13px;color:#ef4444">
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="registerBtn">
+          Create Account <span class="btn-arrow">→</span>
+        </button>
+
+      </form>
+
+      <p class="auth-switch">
+        Already have an account? <a href="login.html">Log in here</a>
+      </p>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

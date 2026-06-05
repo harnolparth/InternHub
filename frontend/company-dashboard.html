@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Dashboard — InternHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo" onclick="location.href='index.html'">
+      <span class="logo-icon">⬡</span>
+      <span class="logo-text">InternHub</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="company-dashboard.html" class="nav-link active">Dashboard</a></li>
+      <li><a href="post-role.html" class="nav-link">Post a Role</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="nav-role-badge company">🏢 Company</span>
+      <span id="navCompanyName" style="font-size:14px;font-weight:600;color:var(--muted)"></span>
+      <button onclick="logout()" class="btn btn-secondary btn-sm">Log Out</button>
+    </div>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="page">
+    <div class="page-inner">
+
+      <!-- Company header card -->
+      <div class="company-header">
+        <div class="company-avatar-lg" id="companyAvatarLg">?</div>
+        <div class="company-info">
+          <div class="company-name" id="companyNameDisplay">Loading...</div>
+          <div class="company-meta">
+            <span class="company-meta-item">🏭 <span id="companyIndustry">—</span></span>
+            <span class="company-meta-item">📍 <span id="companyLocation">—</span></span>
+            <span class="company-meta-item">✉️ <span id="companyEmail">—</span></span>
+            <span class="company-meta-item" id="companyWebsiteWrap" style="display:none">
+              🌐 <a id="companyWebsite" href="#" target="_blank" style="color:var(--accent)">Website</a>
+            </span>
+          </div>
+        </div>
+        <a href="post-role.html" class="btn btn-primary" style="flex-shrink:0">
+          + Post New Role
+        </a>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-row" id="statsRow">
+        <div class="stat-box s-purple">
+          <span class="stat-icon">📋</span>
+          <div><div class="stat-num" id="statRoles">0</div><div class="stat-lbl">Roles Posted</div></div>
+        </div>
+        <div class="stat-box s-green">
+          <span class="stat-icon">👥</span>
+          <div><div class="stat-num" id="statApps">0</div><div class="stat-lbl">Total Applicants</div></div>
+        </div>
+        <div class="stat-box s-amber">
+          <span class="stat-icon">⏳</span>
+          <div><div class="stat-num" id="statPending">0</div><div class="stat-lbl">Pending Review</div></div>
+        </div>
+        <div class="stat-box s-green">
+          <span class="stat-icon">✅</span>
+          <div><div class="stat-num" id="statSelected">0</div><div class="stat-lbl">Shortlisted</div></div>
+        </div>
+      </div>
+
+      <!-- Section header + filter -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <div>
+          <h2 class="section-title">Your Posted Roles</h2>
+          <p class="section-sub">Click on a role to view its applicants</p>
+        </div>
+        <div class="filter-bar" style="margin:0">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="roleSearch" placeholder="Search roles...">
+          </div>
+          <select class="sort-select" id="roleSort" onchange="renderRoles()">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="apps">Most Applicants</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Roles grid -->
+      <div class="roles-grid" id="rolesGrid"></div>
+
+      <!-- Empty state -->
+      <div class="empty-state hidden" id="rolesEmpty">
+        <div class="empty-icon">📭</div>
+        <h3 class="empty-title">No Roles Posted Yet</h3>
+        <p class="empty-text">Post your first internship role so applicants can start applying.</p>
+        <a href="post-role.html" class="btn btn-primary">+ Post Your First Role</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="logo-icon">⬡</span><span class="logo-text">InternHub</span></div>
+      <p class="footer-text">Free internship application management for every company</p>
+    </div>
+  </footer>
+
+  <!-- ===== VIEW APPLICANTS MODAL ===== -->
+  <div class="modal hidden" id="applicantsModal">
+    <div class="modal-box modal-box-lg" style="max-height:90vh;overflow-y:auto">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="applicantsModalTitle">Applicants</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:3px" id="applicantsModalSub"></div>
+        </div>
+        <button class="modal-close" onclick="closeApplicantsModal()">✕</button>
+      </div>
+
+      <!-- Filter tabs inside modal -->
+      <div style="display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap">
+        <button class="filter-btn active" data-afilter="all"      onclick="setAppFilter(this,'all')">All</button>
+        <button class="filter-btn"        data-afilter="Pending"   onclick="setAppFilter(this,'Pending')">⏳ Pending</button>
+        <button class="filter-btn"        data-afilter="Shortlisted" onclick="setAppFilter(this,'Shortlisted')">⭐ Shortlisted</button>
+        <button class="filter-btn"        data-afilter="Selected"  onclick="setAppFilter(this,'Selected')">✅ Selected</button>
+        <button class="filter-btn"        data-afilter="Rejected"  onclick="setAppFilter(this,'Rejected')">❌ Rejected</button>
+      </div>
+
+      <!-- Applicants list rendered by JS -->
+      <div id="applicantsList"></div>
+
+      <div class="empty-state hidden" id="applicantsEmpty" style="padding:32px 0">
+        <div class="empty-icon" style="font-size:36px">👤</div>
+        <h3 class="empty-title" style="font-size:16px">No Applicants Yet</h3>
+        <p class="empty-text">Share your role — applicants will show up here.</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay hidden" id="applicantsOverlay" onclick="closeApplicantsModal()"></div>
+
+  <!-- ===== DELETE ROLE MODAL ===== -->
+  <div class="modal hidden" id="deleteRoleModal">
+    <div class="modal-box modal-box-sm">
+      <div style="font-size:40px;margin-bottom:14px">🗑️</div>
+      <h2 class="modal-title" style="margin-bottom:10px">Delete Role?</h2>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6">
+        This will permanently delete the role and all its applications. This cannot be undone.
+      </p>
+      <div style="display:flex;gap:10px;justify-content:center">
+        <button class="btn btn-secondary" onclick="closeDeleteRoleModal()">Cancel</button>
+        <button class="btn btn-danger"    id="confirmDeleteRoleBtn">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay hidden" id="deleteRoleOverlay" onclick="closeDeleteRoleModal()"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

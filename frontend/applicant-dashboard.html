@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applicant Dashboard — InternHub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo" onclick="location.href='index.html'">
+      <span class="logo-icon">⬡</span>
+      <span class="logo-text">InternHub</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="applicant-dashboard.html" class="nav-link active">Dashboard</a></li>
+    </ul>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="nav-role-badge applicant">🎓 Applicant</span>
+      <span id="navApplicantName" style="font-size:14px;font-weight:600;color:var(--muted)"></span>
+      <button onclick="logout()" class="btn btn-secondary btn-sm">Log Out</button>
+    </div>
+    <button class="nav-toggle" id="navToggle"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="page">
+    <div class="page-inner">
+
+      <!-- Welcome bar -->
+      <div class="welcome-bar">
+        <div class="welcome-info">
+          <div class="avatar avatar-md" id="welcomeAvatar">?</div>
+          <div class="welcome-text">
+            <h2 id="welcomeName">Welcome back!</h2>
+            <p id="welcomeEmail" style="color:var(--muted)"></p>
+          </div>
+        </div>
+        <div class="stats-row" style="margin:0;grid-template-columns:repeat(3,1fr);gap:10px">
+          <div class="stat-box s-purple" style="padding:12px 16px">
+            <span class="stat-icon" style="font-size:18px">📋</span>
+            <div><div class="stat-num" id="wStatTotal" style="font-size:20px">0</div><div class="stat-lbl">Applied</div></div>
+          </div>
+          <div class="stat-box s-green" style="padding:12px 16px">
+            <span class="stat-icon" style="font-size:18px">✅</span>
+            <div><div class="stat-num" id="wStatSelected" style="font-size:20px;color:var(--green)">0</div><div class="stat-lbl">Selected</div></div>
+          </div>
+          <div class="stat-box s-amber" style="padding:12px 16px">
+            <span class="stat-icon" style="font-size:18px">⏳</span>
+            <div><div class="stat-num" id="wStatPending" style="font-size:20px;color:var(--amber)">0</div><div class="stat-lbl">Pending</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('browse', this)">🔍 Browse Roles</button>
+        <button class="tab-btn"        onclick="switchTab('myapps', this)">📋 My Applications</button>
+      </div>
+
+      <!-- TAB: Browse Roles -->
+      <div class="tab-panel active" id="tab-browse">
+
+        <div class="filter-bar">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="browseSearch" placeholder="Search by role, company, skill...">
+            <button class="search-clear hidden" id="browseClear" onclick="clearBrowseSearch()">✕</button>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap" id="domainFilters">
+            <button class="filter-btn active" data-domain="all" onclick="setDomainFilter(this,'all')">All</button>
+            <button class="filter-btn" data-domain="Web Development"     onclick="setDomainFilter(this,'Web Development')">Web Dev</button>
+            <button class="filter-btn" data-domain="App Development"     onclick="setDomainFilter(this,'App Development')">App Dev</button>
+            <button class="filter-btn" data-domain="UI/UX Design"        onclick="setDomainFilter(this,'UI/UX Design')">Design</button>
+            <button class="filter-btn" data-domain="Data Science"        onclick="setDomainFilter(this,'Data Science')">Data</button>
+            <button class="filter-btn" data-domain="Machine Learning / AI" onclick="setDomainFilter(this,'Machine Learning / AI')">ML/AI</button>
+          </div>
+          <select class="sort-select" id="browseSort" onchange="renderBrowse()">
+            <option value="newest">Newest First</option>
+            <option value="deadline">Deadline Soon</option>
+          </select>
+        </div>
+
+        <div class="roles-grid" id="browseGrid"></div>
+
+        <div class="empty-state hidden" id="browseEmpty">
+          <div class="empty-icon">📭</div>
+          <h3 class="empty-title">No Roles Available Yet</h3>
+          <p class="empty-text">Companies haven't posted any roles yet. Check back soon!</p>
+        </div>
+
+        <div class="empty-state hidden" id="browseNoResults">
+          <div class="empty-icon">🔎</div>
+          <h3 class="empty-title">No Matching Roles</h3>
+          <p class="empty-text">Try a different search or filter.</p>
+          <button class="btn btn-secondary" onclick="clearBrowseSearch()">Clear Search</button>
+        </div>
+
+      </div>
+
+      <!-- TAB: My Applications -->
+      <div class="tab-panel" id="tab-myapps">
+
+        <div class="filter-bar">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="filter-btn active" onclick="setMyAppFilter(this,'all')">All</button>
+            <button class="filter-btn" onclick="setMyAppFilter(this,'Pending')">⏳ Pending</button>
+            <button class="filter-btn" onclick="setMyAppFilter(this,'Shortlisted')">⭐ Shortlisted</button>
+            <button class="filter-btn" onclick="setMyAppFilter(this,'Selected')">✅ Selected</button>
+            <button class="filter-btn" onclick="setMyAppFilter(this,'Rejected')">❌ Rejected</button>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px" id="myAppsList"></div>
+
+        <div class="empty-state hidden" id="myAppsEmpty">
+          <div class="empty-icon">📝</div>
+          <h3 class="empty-title">No Applications Yet</h3>
+          <p class="empty-text">Browse roles and submit your first application!</p>
+          <button class="btn btn-primary" onclick="switchTab('browse', document.querySelector('.tab-btn'))">Browse Roles →</button>
+        </div>
+
+        <div class="empty-state hidden" id="myAppsNoResults">
+          <div class="empty-icon">🔎</div>
+          <h3 class="empty-title">No Applications with this Status</h3>
+          <p class="empty-text">Try a different filter.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="logo-icon">⬡</span><span class="logo-text">InternHub</span></div>
+      <p class="footer-text">Free internship application management for every company</p>
+    </div>
+  </footer>
+
+  <!-- ===== APPLY MODAL ===== -->
+  <div class="modal hidden" id="applyModal">
+    <div class="modal-box modal-box-lg" style="max-height:90vh;overflow-y:auto">
+      <div class="modal-header">
+        <h2 class="modal-title">Apply for Role</h2>
+        <button class="modal-close" onclick="closeApplyModal()">✕</button>
+      </div>
+
+      <!-- Role summary inside modal -->
+      <div class="apply-modal-role" id="applyModalRoleInfo"></div>
+
+      <form id="applyForm" novalidate>
+        <input type="hidden" id="applyRoleId">
+
+        <div style="display:flex;flex-direction:column;gap:18px">
+
+          <div class="form-group">
+            <label class="form-label">Your Skills <span class="required">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">⚡</span>
+              <input type="text" id="applySkills" class="form-input"
+                placeholder="e.g. HTML, CSS, JavaScript, React">
+            </div>
+            <span class="form-hint">List the skills relevant to this role</span>
+            <span class="error-msg" id="applySkillsErr"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Phone Number <span class="required">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">📱</span>
+              <input type="tel" id="applyPhone" class="form-input"
+                placeholder="e.g. 9876543210" maxlength="10">
+            </div>
+            <span class="error-msg" id="applyPhoneErr"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">College / Institution <span class="required">*</span></label>
+            <div class="input-wrap">
+              <span class="input-icon">🏫</span>
+              <input type="text" id="applyCollege" class="form-input"
+                placeholder="e.g. MIT College of Engineering, Pune">
+            </div>
+            <span class="error-msg" id="applyCollegeErr"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">About Yourself / Resume Summary <span class="required">*</span></label>
+            <textarea id="applyResume" class="form-input form-textarea" rows="5"
+              placeholder="Tell us about yourself, your projects, achievements, and why you want this internship..."></textarea>
+            <div style="display:flex;justify-content:space-between;margin-top:4px">
+              <span class="error-msg" id="applyResumeErr"></span>
+              <span class="form-hint"><span id="applyCharCount">0</span>/1000</span>
+            </div>
+          </div>
+
+          <!-- Server error -->
+          <div id="applyServerErr" class="hidden"
+            style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);
+                   border-radius:10px;padding:12px 14px;font-size:13px;color:#ef4444">
+          </div>
+
+          <div style="display:flex;gap:10px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border)">
+            <button type="button" class="btn btn-secondary" onclick="closeApplyModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="applySubmitBtn">
+              Submit Application <span class="btn-arrow">→</span>
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-overlay hidden" id="applyOverlay" onclick="closeApplyModal()"></div>
+
+  <!-- Apply success modal -->
+  <div class="modal hidden" id="applySuccessModal">
+    <div class="modal-box modal-box-sm" style="text-align:center">
+      <div style="width:66px;height:66px;border-radius:50%;background:rgba(34,197,94,0.14);
+                  border:2px solid var(--green);display:flex;align-items:center;
+                  justify-content:center;font-size:26px;margin:0 auto 18px">✓</div>
+      <h2 class="modal-title" style="margin-bottom:10px">Application Submitted!</h2>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.6">
+        The company has received your application. You can track its status in "My Applications".
+      </p>
+      <button onclick="closeApplySuccess()" class="btn btn-primary btn-full">
+        View My Applications →
+      </button>
+    </div>
+  </div>
+  <div class="modal-overlay hidden" id="applySuccessOverlay"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
