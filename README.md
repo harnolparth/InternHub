@@ -1,109 +1,168 @@
-⬡ InternHub — Internship Application Management Platform
-A full-stack web application that lets any company post internship roles and applicants browse and apply — without needing a dedicated recruitment website.
-Built with HTML · CSS · JavaScript · Python Flask · MongoDB Atlas
+# ⬡ InternHub — Internship Application Management Platform
 
-🌐 Live Demo
+A full-stack web application that allows companies to post internship opportunities and applicants to browse and apply — without needing a dedicated recruitment website.
 
-Deployed on Render: https://internhub-76nv.onrender.com
+**Built with:** HTML • CSS • JavaScript • Python Flask • MongoDB Atlas
 
+---
 
-📌 What is InternHub?
-Many small companies, startups, and agencies offer internship positions but cannot afford to build a full recruitment website. InternHub solves that.
+## 🌐 Live Demo
 
-Companies register, post internship roles, review applicants, and update their status
-Applicants register, browse all open roles from all companies, apply, and track their application status in real time
-No subscription fees — completely free to use and self-host
-No extra website needed — companies get a professional application portal instantly
+**Deployed on Render:**
+https://internhub-76nv.onrender.com
 
+---
 
-✨ Features
-For Companies
+## 📌 What is InternHub?
 
-Register with company name, industry, location, and website
-Post internship roles with title, domain, location, duration, stipend, skills, and description
-View all applicants for each posted role
-Change applicant status: Pending → Shortlisted → Selected / Rejected
-Delete roles (automatically removes all related applications)
-Search and sort posted roles
+Many startups, small companies, and agencies offer internship opportunities but often lack the resources to build a complete recruitment portal.
 
-For Applicants
+**InternHub** provides a centralized internship management platform where:
 
-Register with name and email
-Browse all open internship roles from all registered companies
-Search by keyword, filter by domain, sort by newest or deadline
-Apply to roles with skills, phone number, college, and resume summary
-Cannot apply to the same role twice
-Track all submitted applications with live status updates
+* Companies can register, post internship roles, manage applicants, and update application statuses.
+* Applicants can register, browse internships, apply for opportunities, and track application progress in real time.
+* No subscription fees are required.
+* Companies get an instant professional internship recruitment portal.
 
-Platform
+---
 
-JWT-based authentication with 7-day token expiry
-bcrypt password hashing — passwords never stored as plain text
-Role-based access control — companies and applicants have separate dashboards
-XSS prevention on all user-generated content
-Fully responsive UI — works on mobile, tablet, and desktop
-Server offline detection with helpful error messages
+## ✨ Features
 
+### 🏢 For Companies
 
-🗂️ Project Structure
+* Register company accounts
+* Add company details (name, industry, location, website)
+* Post internship opportunities
+* View applicants for each role
+* Update application status:
+
+  * Pending
+  * Shortlisted
+  * Selected
+  * Rejected
+* Delete internship roles
+* Search and sort posted roles
+
+### 👨‍🎓 For Applicants
+
+* Register applicant accounts
+* Browse all available internship opportunities
+* Search internships by keyword
+* Filter internships by domain
+* Sort roles by newest or deadline
+* Apply using:
+
+  * Skills
+  * Phone Number
+  * College Name
+  * Resume Summary
+* Prevent duplicate applications
+* Track application status in real time
+
+### ⚙️ Platform Features
+
+* JWT-based Authentication
+* 7-Day Session Expiry
+* bcrypt Password Hashing
+* Role-Based Access Control
+* XSS Protection
+* Responsive Design
+* Server Offline Detection
+* Real-Time Application Tracking
+
+---
+
+## 🗂️ Project Structure
+
 InternHub/
 │
-├── frontend/                        ← All HTML, CSS, JS files
-│   ├── index.html                   ← Landing page (public)
-│   ├── login.html                   ← Login page for both roles
-│   ├── register.html                ← Registration page
-│   ├── company-dashboard.html       ← Company control panel
-│   ├── post-role.html               ← Post a new internship role
-│   ├── applicant-dashboard.html     ← Applicant control panel
+├── frontend/
+│   ├── index.html
+│   ├── login.html
+│   ├── register.html
+│   ├── company-dashboard.html
+│   ├── post-role.html
+│   ├── applicant-dashboard.html
 │   ├── css/
-│   │   └── style.css                ← Complete stylesheet (617 lines)
+│   │   └── style.css
 │   └── js/
-│       └── app.js                   ← All frontend logic (830 lines)
+│       └── app.js
 │
-├── backend/                         ← Python Flask server
-│   ├── app.py                       ← Main Flask application
-│   ├── wsgi.py                      ← Gunicorn entry point (production)
-│   ├── config.py                    ← MongoDB connection and config
-│   ├── requirements.txt             ← Python dependencies
+├── backend/
+│   ├── app.py
+│   ├── wsgi.py
+│   ├── config.py
+│   ├── requirements.txt
 │   └── routes/
-│       ├── __init__.py              ← Makes routes a Python package
-│       ├── auth.py                  ← Register, Login, Company Slots
-│       ├── roles.py                 ← Post, List, Delete roles
-│       └── applications.py         ← Submit, View, Update status
+│       ├── __init__.py
+│       ├── auth.py
+│       ├── roles.py
+│       └── applications.py
 │
 └── README.md
 
-Technology Stack
 
-Frontend
+---
+
+## 🛠️ Technology Stack
+
+### Frontend
 
 * HTML5
 * CSS3
 * JavaScript (ES6)
 
-Backend
+### Backend
 
 * Python
 * Flask
 * Flask-CORS
 
-Database
+### Database
 
 * MongoDB Atlas
 * PyMongo
 
-Authentication & Security
+### Authentication & Security
 
 * JWT (JSON Web Tokens)
 * bcrypt Password Hashing
 
-Deployment
+### Deployment
 
 * Render
 * MongoDB Atlas
 
 
-Future Enhancements
+## 🛡️ Security Features
+
+### Password Security
+
+* Passwords are never stored in plain text.
+* Passwords are hashed using bcrypt with random salt.
+
+### Authentication
+
+* JWT-based authentication
+* Tokens expire after 7 days
+* Secure route protection
+
+### Authorization
+
+* Role-based access control
+* Companies cannot access applicant routes
+* Applicants cannot access company routes
+
+### Data Protection
+
+* XSS Prevention
+* Input Validation
+* Duplicate Application Prevention
+* Object-Level Authorization
+
+---
+
+## 📈 Future Enhancements
 
 * Resume PDF Upload
 * Email Notifications
@@ -113,35 +172,32 @@ Future Enhancements
 * Analytics Dashboard
 * Mobile Application
 
-Learning Outcomes
+---
 
-Through this project, I gained practical experience in:
+## 🎓 Learning Outcomes
+
+This project helped me gain practical experience in:
 
 * Frontend Development
-* Backend Development using Flask
+* Backend Development with Flask
 * REST API Design
 * MongoDB Database Integration
-* Authentication and Security
-* Deployment and Cloud Hosting
+* Authentication & Security
+* Cloud Deployment
 * Full Stack Web Development
 
-🛡️ Security Features
+---
 
-Passwords — never stored as plain text, hashed with bcrypt using a random salt
-Authentication — JWT tokens signed with SECRET_KEY, expire after 7 days
-Route protection — every protected endpoint verifies the JWT before processing
-Role-based access — companies cannot access applicant routes and vice versa
-Object-level authorization — companies can only see/modify their own roles and applicants
-XSS prevention — all user input is sanitized before being inserted into the DOM
-Input validation — validated on both frontend (JavaScript) and backend (Python)
-Duplicate prevention — compound unique index prevents double applications at database level
+## 👤 Author
 
-
-👤 Author
-Parth Harnol
-VS Software Lab — 6-Week Internship
+**Parth Harnol**
+VS Software Lab – 6 Week Internship
 Academic Year: 2026–2027
 
-📄 License
-This project was built as part of an internship program.
-Free to use, modify, and deploy for educational and personal purposes.
+---
+
+## 📄 License
+
+This project was developed as part of an internship program.
+
+Feel free to use, modify, and deploy it for educational and personal learning purposes.
